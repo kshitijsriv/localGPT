@@ -17,6 +17,7 @@ from langchain.vectorstores import Chroma
 from werkzeug.utils import secure_filename
 
 from constants import CHROMA_SETTINGS, EMBEDDING_MODEL_NAME, PERSIST_DIRECTORY, MODEL_ID, MODEL_BASENAME
+from trip_planning_utils import extract_src_dest, find_stop_coordinates, get_directions
 
 if torch.backends.mps.is_available():
     DEVICE_TYPE = "mps"
@@ -62,7 +63,7 @@ DB = Chroma(
 RETRIEVER = DB.as_retriever()
 
 LLM = load_model(device_type=DEVICE_TYPE, model_id=MODEL_ID, model_basename=MODEL_BASENAME)
-prompt, memory = get_prompt_template(promptTemplate_type="llama", history=False)
+prompt, memory = get_prompt_template(promptTemplate_type="llama", history=True)
 
 QA = RetrievalQA.from_chain_type(
     llm=LLM,
@@ -70,7 +71,7 @@ QA = RetrievalQA.from_chain_type(
     retriever=RETRIEVER,
     return_source_documents=SHOW_SOURCES,
     chain_type_kwargs={
-        "prompt": prompt,
+        "prompt": prompt, "memory": memory,
     },
 )
 
@@ -172,6 +173,14 @@ def prompt_route():
                 (os.path.basename(str(document.metadata["source"])), str(document.page_content))
             )
 
+        source, destination = extract_src_dest(answer)
+        if source is not None and destination is not None:
+            source_coordinates = find_stop_coordinates(source)
+            destination_coordinates = find_stop_coordinates(destination)
+            if source_coordinates is not None and destination_coordinates is not None:
+                directions_response = get_directions(source_coordinates, destination_coordinates)
+                prompt_response_dict["Answer"] = directions_response.json()
+                prompt_response_dict["Sources"] = ["directions API"]
         return jsonify(prompt_response_dict), 200
     else:
         return "No user prompt received", 400
