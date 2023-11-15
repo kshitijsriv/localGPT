@@ -179,8 +179,17 @@ def prompt_route():
             destination_coordinates = find_stop_coordinates(destination)
             if source_coordinates is not None and destination_coordinates is not None:
                 directions_response = get_directions(source_coordinates, destination_coordinates)
-                prompt_response_dict["Answer"] = directions_response.json()
-                prompt_response_dict["Sources"] = ["directions API"]
+                first_direction = directions_response.json()["possible_directions"][0]["directions"]["routes"]
+                route_description = []
+
+                for route in first_direction:
+                    # Extracting stop names
+                    stops = [stop["name"] for stop in route["stops"]]
+                    # Joining the stops with ' -> ' and appending the route type
+                    route_description.append(" -> ".join(stops) + " - " + route["route"])
+
+                prompt_response_dict["Answer"] = route_description
+                prompt_response_dict["Sources"].append("Directions API")
         return jsonify(prompt_response_dict), 200
     else:
         return "No user prompt received", 400

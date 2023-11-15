@@ -52,5 +52,5 @@ def get_directions(src, dest):
 
 
 if __name__ == '__main__':
-    print(find_stop_coordinates(stop_name_to_find="mg road"))
+    print(find_stop_coordinates(stop_name_to_find="govindpuri"))
     print(find_stop_coordinates(stop_name_to_find="Rajiv chowk"))
