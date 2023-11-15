@@ -95,8 +95,8 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2" # Uses 0.2 GB of VRAM (Less accurate b
 #### (FOR GGUF MODELS)
 ####
 
-# MODEL_ID = "TheBloke/Llama-2-13b-Chat-GGUF"
-# MODEL_BASENAME = "llama-2-13b-chat.Q4_K_M.gguf"
+#MODEL_ID = "TheBloke/Llama-2-13b-Chat-GGUF"
+#MODEL_BASENAME = "llama-2-13b-chat.Q4_K_M.gguf"
 
 MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
 MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
@@ -159,8 +159,8 @@ MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 ### (*** Requires using intfloat/e5-small-v2 instead of hkunlp/instructor-large as embedding model ***)
 
 ### 7b GPTQ Models for 8GB GPUs
-# MODEL_ID = "TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ"
-# MODEL_BASENAME = "Wizard-Vicuna-7B-Uncensored-GPTQ-4bit-128g.no-act.order.safetensors"
+#MODEL_ID = "TheBloke/Wizard-Vicuna-7B-Uncensored-GPTQ"
+#MODEL_BASENAME = "Wizard-Vicuna-7B-Uncensored-GPTQ-4bit-128g.no-act.order.safetensors"
 # MODEL_ID = "TheBloke/WizardLM-7B-uncensored-GPTQ"
 # MODEL_BASENAME = "WizardLM-7B-uncensored-GPTQ-4bit-128g.compat.no-act-order.safetensors"
 # MODEL_ID = "TheBloke/wizardLM-7B-GPTQ"
@@ -176,3 +176,5 @@ MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 # MODEL_BASENAME = "wizard-vicuna-13B.ggmlv3.q2_K.bin"
 # MODEL_ID = "TheBloke/orca_mini_3B-GGML"
 # MODEL_BASENAME = "orca-mini-3b.ggmlv3.q4_0.bin"
+
+#MODEL_BASENAME = "TheBloke/Llama-2-7B-Chat-fp16"
