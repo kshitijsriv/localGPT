@@ -4,7 +4,10 @@ import re
 import pandas as pd
 from fuzzywuzzy import process
 import requests
+from dotenv import load_dotenv
 
+
+load_dotenv(".env")
 DIRECTIONS_BASE_URL = os.getenv("DIRECTIONS_BASE_URL")
 stops = pd.read_csv("./stops.txt")
 
