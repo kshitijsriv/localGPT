@@ -14,15 +14,18 @@ stops = pd.read_csv("./stops.txt")
 
 
 def find_stop_coordinates(stop_name_to_find, score_threshold=80):
-    # Perform fuzzy matching to find the best matching stop name
-    best_match = process.extractOne(stop_name_to_find, stops['stop_name'], score_cutoff=score_threshold)
+    # Perform fuzzy matching to get a list of matches and their scores
+    matches = process.extract(stop_name_to_find, stops['stop_name'])
+
+    # Filter to find the best match above the score threshold
+    best_match = next((match for match, score, _ in matches if score >= score_threshold), None)
 
     if best_match:
         # Find the stop in the DataFrame
-        matching_stop = stops[stops['stop_name'] == best_match[0]].iloc[0]
+        matching_stop = stops[stops['stop_name'] == best_match].iloc[0]
         return matching_stop['stop_lat'], matching_stop['stop_lon']
     else:
-        return None
+        return None, None
 
 
 def extract_src_dest(json_string):
@@ -46,3 +49,8 @@ def get_directions(src, dest):
 
     response = requests.request("GET", url, headers=headers, data=payload)
     return response
+
+
+if __name__ == '__main__':
+    print(find_stop_coordinates(stop_name_to_find="mg road"))
+    print(find_stop_coordinates(stop_name_to_find="Rajiv chowk"))
