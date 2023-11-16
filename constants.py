@@ -184,5 +184,7 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2" # Uses 0.2 GB of VRAM (Less accurate b
 #MODEL_BASENAME = "TheBloke/Llama-2-7B-Chat-fp16"
 # MODEL_BASENAME = None
 
-MODEL_ID = "lvkaokao/mistral-7b-finetuned-orca-dpo-v2"
+#MODEL_ID = "lvkaokao/mistral-7b-finetuned-orca-dpo-v2"
+#MODEL_BASENAME = None
+MODEL_ID = "TheBloke/dolphin-2.1-mistral-7B-GGUF"
 MODEL_BASENAME = "dolphin-2.1-mistral-7b.Q5_K_M.gguf"
