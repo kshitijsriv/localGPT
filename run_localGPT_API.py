@@ -16,7 +16,7 @@ from prompt_template_utils import get_prompt_template
 from langchain.vectorstores import Chroma
 from werkzeug.utils import secure_filename
 
-from constants import CHROMA_SETTINGS, EMBEDDING_MODEL_NAME, PERSIST_DIRECTORY, MODEL_ID, MODEL_BASENAME
+from constants import CHROMA_SETTINGS, EMBEDDING_MODEL_NAME, PERSIST_DIRECTORY, MODEL_ID, MODEL_BASENAME, PROMPT_TEMPLATE
 from trip_planning_utils import extract_src_dest, find_stop_coordinates, get_directions
 
 if torch.backends.mps.is_available():
@@ -63,7 +63,7 @@ DB = Chroma(
 RETRIEVER = DB.as_retriever()
 
 LLM = load_model(device_type=DEVICE_TYPE, model_id=MODEL_ID, model_basename=MODEL_BASENAME)
-prompt, memory = get_prompt_template(promptTemplate_type="llama", history=True)
+prompt, memory = get_prompt_template(promptTemplate_type=PROMPT_TEMPLATE, history=True)
 
 QA = RetrievalQA.from_chain_type(
     llm=LLM,
@@ -136,7 +136,7 @@ def run_ingest_route():
             client_settings=CHROMA_SETTINGS,
         )
         RETRIEVER = DB.as_retriever()
-        prompt, memory = get_prompt_template(promptTemplate_type="llama", history=False)
+        prompt, memory = get_prompt_template(promptTemplate_type=PROMPT_TEMPLATE, history=False)
 
         QA = RetrievalQA.from_chain_type(
             llm=LLM,
