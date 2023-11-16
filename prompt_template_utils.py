@@ -44,26 +44,51 @@ def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, h
             prompt_template = B_INST + SYSTEM_PROMPT + instruction + E_INST
             prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
     elif promptTemplate_type == "mistral":
-        B_INST, E_INST = "<s>[INST] ", " [/INST]"
+        # B_INST, E_INST = "<s>[INST] ", " [/INST]"
+        # if history:
+        #     prompt_template = (
+        #         B_INST
+        #         + system_prompt
+        #         + """
+        #
+        #     Context: {history} \n {context}
+        #     User: {question}"""
+        #         + E_INST
+        #     )
+        #     prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
+        # else:
+        #     prompt_template = (
+        #         B_INST
+        #         + system_prompt
+        #         + """
+        #
+        #     Context: {context}
+        #     User: {question}"""
+        #         + E_INST
+        #     )
+        #     prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
+        B_INST, E_INST = "<|im_start|>user ", " <|im_end|>"
+        B_SYS, E_SYS = "<|im_start|>system", " <|im_end|>\n\n"
+        SYSTEM_PROMPT = B_SYS + system_prompt + E_SYS
         if history:
             prompt_template = (
+                SYSTEM_PROMPT +
                 B_INST
-                + system_prompt
                 + """
 
-            Context: {history} \n {context}
-            User: {question}"""
+                    Context: {history} \n {context}
+                    User: {question}"""
                 + E_INST
             )
             prompt = PromptTemplate(input_variables=["history", "context", "question"], template=prompt_template)
         else:
             prompt_template = (
+                SYSTEM_PROMPT +
                 B_INST
-                + system_prompt
                 + """
 
-            Context: {context}
-            User: {question}"""
+                    Context: {context}
+                    User: {question}"""
                 + E_INST
             )
             prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
