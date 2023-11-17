@@ -11,6 +11,14 @@ from dotenv import load_dotenv
 
 load_dotenv(".env")
 PROMPT_TEMPLATE = os.getenv("PROMPT_TEMPLATE")
+MODEL_ID = os.getenv("MODEL_ID", "TheBloke/Llama-2-7b-Chat-GGUF")
+MODEL_BASENAME = os.getenv("MODEL_BASENAME", "llama-2-7b-chat.Q2_K.gguf")
+MODEL_BASENAME = None if MODEL_BASENAME == "None" else MODEL_BASENAME
+
+# OPEN AI configs
+OPENAI_GPT_MODEL = os.getenv("OPENAI_GPT_MODEL")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", None)
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
 
 # load_dotenv()
 ROOT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -102,9 +110,9 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2" # Uses 0.2 GB of VRAM (Less accurate b
 #MODEL_ID = "TheBloke/Llama-2-13b-Chat-GGUF"
 #MODEL_BASENAME = "llama-2-13b-chat.Q4_K_M.gguf"
 
-MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
+# MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
 # MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
-MODEL_BASENAME = "llama-2-7b-chat.Q2_K.gguf"
+# MODEL_BASENAME = "llama-2-7b-chat.Q2_K.gguf"
 
 #MODEL_ID = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
 #MODEL_BASENAME = "mistral-7b-instruct-v0.1.Q8_0.gguf"
@@ -189,5 +197,5 @@ MODEL_BASENAME = "llama-2-7b-chat.Q2_K.gguf"
 #MODEL_BASENAME = None
 #MODEL_ID = "TheBloke/dolphin-2.1-mistral-7B-GGUF"
 #MODEL_BASENAME = "dolphin-2.1-mistral-7b.Q5_K_M.gguf"
-MODEL_ID = "TheBloke/dolphin-2.2.1-mistral-7B-GGUF"
-MODEL_BASENAME = "dolphin-2.2.1-mistral-7b.Q5_K_M.gguf"
+# MODEL_ID = "TheBloke/dolphin-2.2.1-mistral-7B-GGUF"
+# MODEL_BASENAME = "dolphin-2.2.1-mistral-7b.Q5_K_M.gguf"

@@ -2,6 +2,8 @@ import os
 import logging
 import click
 import torch
+from langchain.chat_models import ChatOpenAI
+
 import utils
 from langchain.chains import RetrievalQA
 from langchain.embeddings import HuggingFaceInstructEmbeddings
@@ -33,7 +35,8 @@ from constants import (
     MODEL_BASENAME,
     MAX_NEW_TOKENS,
     MODELS_PATH,
-    CHROMA_SETTINGS
+    CHROMA_SETTINGS,
+    OPENAI_GPT_MODEL
 )
 
 
@@ -67,7 +70,11 @@ def load_model(device_type, model_id, model_basename=None, LOGGING=logging):
         else:
             model, tokenizer = load_quantized_model_qptq(model_id, model_basename, device_type, LOGGING)
     else:
-        model, tokenizer = load_full_model(model_id, model_basename, device_type, LOGGING)
+        if model_id == "openai":
+            llm = ChatOpenAI(temperature=0.8, model_name=OPENAI_GPT_MODEL)
+            return llm
+        else:
+            model, tokenizer = load_full_model(model_id, model_basename, device_type, LOGGING)
 
     # Load configuration from the model to avoid warnings
     generation_config = GenerationConfig.from_pretrained(model_id)
@@ -266,7 +273,7 @@ def main(device_type, show_sources, use_history, model_type, save_qa):
                 print("\n> " + document.metadata["source"] + ":")
                 print(document.page_content)
             print("----------------------------------SOURCE DOCUMENTS---------------------------")
-        
+
         # Log the Q&A to CSV only if save_qa is True
         if save_qa:
             utils.log_to_csv(query, answer)
