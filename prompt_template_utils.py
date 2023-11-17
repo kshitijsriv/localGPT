@@ -4,7 +4,7 @@ Modify the prompt template based on the model you select.
 This seems to have significant impact on the output of the LLM.
 """
 
-from langchain.memory import ConversationBufferMemory
+from langchain.memory import ConversationBufferMemory, ConversationSummaryBufferMemory
 from langchain.prompts import PromptTemplate
 
 # this is specific to Llama-2.
@@ -25,7 +25,7 @@ If it is a journey planning query and you answer with a YES, the response should
 """
 
 
-def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, history=False):
+def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, history=False, llm=None):
     if promptTemplate_type == "llama":
         B_INST, E_INST = "[INST]", "[/INST]"
         B_SYS, E_SYS = "<<SYS>>\n", "\n<</SYS>>\n\n"
@@ -117,6 +117,9 @@ def get_prompt_template(system_prompt=system_prompt, promptTemplate_type=None, h
             prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
 
     memory = ConversationBufferMemory(input_key="question", memory_key="history")
+    if llm:
+        memory = ConversationSummaryBufferMemory(input_key="question", memory_key="history", llm=llm,
+                                                 max_token_limit=2048)
 
     return (
         prompt,

@@ -63,7 +63,7 @@ DB = Chroma(
 RETRIEVER = DB.as_retriever()
 
 LLM = load_model(device_type=DEVICE_TYPE, model_id=MODEL_ID, model_basename=MODEL_BASENAME)
-prompt, memory = get_prompt_template(promptTemplate_type=PROMPT_TEMPLATE, history=True)
+prompt, memory = get_prompt_template(promptTemplate_type=PROMPT_TEMPLATE, history=True, llm=LLM)
 
 QA = RetrievalQA.from_chain_type(
     llm=LLM,

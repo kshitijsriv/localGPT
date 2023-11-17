@@ -38,7 +38,7 @@ def load_single_document(file_path: str) -> Document:
        return loader.load()[0]
     except Exception as ex:
        file_log('%s loading error: \n%s' % (file_path, ex))
-       return None 
+       return None
 
 def load_document_batch(filepaths):
     logging.info("Loading document batch")
@@ -93,7 +93,7 @@ def load_documents(source_dir: str) -> list[Document]:
                 docs.extend(contents)
             except Exception as ex:
                 file_log('Exception: %s' % (ex))
-                
+
     return docs
 
 
@@ -171,7 +171,7 @@ def main(device_type):
         persist_directory=PERSIST_DIRECTORY,
         client_settings=CHROMA_SETTINGS,
     )
-   
+
 
 
 if __name__ == "__main__":
