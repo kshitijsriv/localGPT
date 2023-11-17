@@ -18,9 +18,10 @@ or destination mentioned in the question or if there is an indication that the u
 are currently.
 
 If it is a journey planning query and you answer with a YES, the response should be *JSON structured* in the following format:
-
+{{
     "src": "<source_name>",
     "dest": "<destination_name>"
+}}
 """
 
 

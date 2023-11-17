@@ -50,8 +50,8 @@ DOCUMENT_MAP = {
     ".txt": TextLoader,
     ".md": UnstructuredMarkdownLoader,
     ".py": TextLoader,
-    # ".pdf": PDFMinerLoader,
-    ".pdf": UnstructuredFileLoader,
+    ".pdf": PDFMinerLoader,
+    #".pdf": UnstructuredFileLoader,
     ".csv": CSVLoader,
     ".xls": UnstructuredExcelLoader,
     ".xlsx": UnstructuredExcelLoader,
@@ -105,8 +105,8 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2" # Uses 0.2 GB of VRAM (Less accurate b
 # MODEL_ID = "TheBloke/Llama-2-7b-Chat-GGUF"
 # MODEL_BASENAME = "llama-2-7b-chat.Q4_K_M.gguf"
 
-# MODEL_ID = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
-# MODEL_BASENAME = "mistral-7b-instruct-v0.1.Q8_0.gguf"
+#MODEL_ID = "TheBloke/Mistral-7B-Instruct-v0.1-GGUF"
+#MODEL_BASENAME = "mistral-7b-instruct-v0.1.Q8_0.gguf"
 
 # MODEL_ID = "TheBloke/Llama-2-70b-Chat-GGUF"
 # MODEL_BASENAME = "llama-2-70b-chat.Q4_K_M.gguf"
@@ -181,10 +181,12 @@ EMBEDDING_MODEL_NAME = "all-MiniLM-L6-v2" # Uses 0.2 GB of VRAM (Less accurate b
 # MODEL_ID = "TheBloke/orca_mini_3B-GGML"
 # MODEL_BASENAME = "orca-mini-3b.ggmlv3.q4_0.bin"
 
-#MODEL_BASENAME = "TheBloke/Llama-2-7B-Chat-fp16"
-# MODEL_BASENAME = None
+#MODEL_ID = "TheBloke/Llama-2-7B-Chat-fp16"
+#MODEL_BASENAME = None
 
 #MODEL_ID = "lvkaokao/mistral-7b-finetuned-orca-dpo-v2"
 #MODEL_BASENAME = None
-MODEL_ID = "TheBloke/dolphin-2.1-mistral-7B-GGUF"
-MODEL_BASENAME = "dolphin-2.1-mistral-7b.Q5_K_M.gguf"
+#MODEL_ID = "TheBloke/dolphin-2.1-mistral-7B-GGUF"
+#MODEL_BASENAME = "dolphin-2.1-mistral-7b.Q5_K_M.gguf"
+MODEL_ID = "TheBloke/dolphin-2.2.1-mistral-7B-GGUF"
+MODEL_BASENAME = "dolphin-2.2.1-mistral-7b.Q5_K_M.gguf"
