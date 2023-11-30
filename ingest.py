@@ -35,7 +35,7 @@ def load_single_document(file_path: str) -> Document:
        else:
            file_log(file_path + ' document type is undefined.')
            raise ValueError("Document type is undefined")
-       return loader.load()[0]
+       return loader.load() if file_extension == ".csv" else loader.load()[0]
     except Exception as ex:
        file_log('%s loading error: \n%s' % (file_path, ex))
        return None
@@ -57,6 +57,15 @@ def load_document_batch(filepaths):
 
 
 def load_documents(source_dir: str) -> list[Document]:
+    def flatten_if_nested_list(variable):
+        """
+        Flattens the variable if it is a list of lists.
+        If it's a simple list or not a list, does nothing.
+        """
+        if isinstance(variable, list):
+            if all(isinstance(elem, list) for elem in variable):
+                return [item for sublist in variable for item in sublist]
+        return variable
     # Loads all documents from the source documents directory, including nested folders
     paths = []
     for root, _, files in os.walk(source_dir):
@@ -94,7 +103,7 @@ def load_documents(source_dir: str) -> list[Document]:
             except Exception as ex:
                 file_log('Exception: %s' % (ex))
 
-    return docs
+    return flatten_if_nested_list(docs)
 
 
 def split_documents(documents: list[Document]) -> tuple[list[Document], list[Document]]:
@@ -171,7 +180,6 @@ def main(device_type):
         persist_directory=PERSIST_DIRECTORY,
         client_settings=CHROMA_SETTINGS,
     )
-
 
 
 if __name__ == "__main__":

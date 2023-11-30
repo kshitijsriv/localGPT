@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import shutil
@@ -18,6 +19,7 @@ from werkzeug.utils import secure_filename
 
 from constants import CHROMA_SETTINGS, EMBEDDING_MODEL_NAME, PERSIST_DIRECTORY, MODEL_ID, MODEL_BASENAME, PROMPT_TEMPLATE
 from trip_planning_utils import extract_src_dest, find_stop_coordinates, get_directions
+import ingest
 
 if torch.backends.mps.is_available():
     DEVICE_TYPE = "mps"
@@ -129,7 +131,7 @@ def run_ingest_route():
         result = subprocess.run(run_langest_commands, capture_output=True)
         if result.returncode != 0:
             return "Script execution failed: {}".format(result.stderr.decode("utf-8")), 500
-        # load the vectorstore
+        # # load the vectorstore
         DB = Chroma(
             persist_directory=PERSIST_DIRECTORY,
             embedding_function=EMBEDDINGS,
@@ -154,6 +156,27 @@ def run_ingest_route():
 
 @app.route("/api/prompt_route", methods=["GET", "POST"])
 def prompt_route():
+    def format_json_string(json_string):
+        """
+        Converts a JSON string to a human-readable format, replacing boolean values with 'Yes' or 'No'.
+        If the string is not valid JSON, it does nothing.
+        """
+        try:
+            # Attempt to convert the string to JSON
+            data = json.loads(json_string)
+
+            formatted_output = ""
+            for key, value in data.items():
+                if isinstance(value, bool):
+                    value = "Yes" if value else "No"
+                formatted_output += f"{key.replace('_', ' ')}: {value}\n"
+
+            return formatted_output
+
+        except json.JSONDecodeError:
+            # If the string is not valid JSON, do nothing
+            return json_string
+
     global QA
     user_prompt = request.form.get("user_prompt")
     if user_prompt:
@@ -166,6 +189,7 @@ def prompt_route():
             "Prompt": user_prompt,
             "Answer": answer,
         }
+        logging.error(f"response on: {prompt_response_dict}")
 
         prompt_response_dict["Sources"] = []
         for document in docs:
@@ -190,6 +214,10 @@ def prompt_route():
 
                 prompt_response_dict["Answer"] = route_description
                 prompt_response_dict["Sources"].append("Directions API")
+            else:
+                prompt_response_dict["Answer"] = format_json_string(prompt_response_dict["Answer"])
+        else:
+            prompt_response_dict["Answer"] = format_json_string(prompt_response_dict["Answer"])
         return jsonify(prompt_response_dict), 200
     else:
         return "No user prompt received", 400
